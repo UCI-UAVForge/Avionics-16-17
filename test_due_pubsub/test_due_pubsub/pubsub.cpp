@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 #include <list>
-using namespace // define namespace
+#include <cstdlib>
 
 static std::map<std::string&, std::list</*not entirely sure what goes in here yet*/>> subs;
 
