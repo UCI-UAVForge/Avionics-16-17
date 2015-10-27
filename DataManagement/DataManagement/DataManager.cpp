@@ -20,8 +20,8 @@ namespace DataManagement
 		std::pair < const std::string&, std::vector<void(void*, std::size_t)> > tempPair;
 		std::vector < void(void*, std::size_t) > tempVect;
 		tempVect.push_back(void(*, len));
-		tempPair = std::make_pair(type, )
-		std::vector<void<void*, std::size_t>>
+		tempPair = std::make_pair(type, );
+		//std::vector<void<void*, std::size_t>>
 		subscribers.insert((type, ));
 		// TODO needs lots of work
 	}

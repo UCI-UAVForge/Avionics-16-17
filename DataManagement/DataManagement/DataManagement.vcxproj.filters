@@ -17,5 +17,14 @@
   <ItemGroup>
     <None Include="DataManagement.ino" />
   </ItemGroup>
- 
+  <ItemGroup>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DataManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

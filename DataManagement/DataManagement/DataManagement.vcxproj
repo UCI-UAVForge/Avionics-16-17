@@ -73,6 +73,12 @@
       <FileType>CppCode</FileType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DataManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DataManager.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
