@@ -9,6 +9,7 @@
 
 #include <string>
 
+#include <iostream>
 #include <stdlib.h>
 
 namespace DataManagement
