@@ -8,6 +8,9 @@
 
 namespace DataManagement
 {
+	void testPublish(int* num);
+	void testSubscribe();
+	void print(void* i, size_t len);
 	void main()
 	{
 		testSubscribe();
