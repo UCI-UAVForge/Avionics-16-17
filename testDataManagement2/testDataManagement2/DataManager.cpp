@@ -43,7 +43,8 @@ namespace DataManagement
 		if (subscribers.count(type) == 0)
 		{
 			std::pair<std::string, std::vector<void(*)(void*, std::size_t)>> tempPair;
-			std::vector<void(*)(void*, std::size_t)>* emptyVect = new std::vector<void(*)(void*, std::size_t)>();
+			// vector, not a vector pointer fixes the previous vector error C2679
+			std::vector<void(*)(void*, std::size_t)> emptyVect;
 			tempPair = std::make_pair(type, emptyVect);
 			subscribers.insert(tempPair);
 		}

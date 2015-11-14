@@ -11,7 +11,9 @@ namespace DataManagement
 	void testPublish(int* num);
 	void testSubscribe();
 	void print(void* i, size_t len);
-	void main()
+	// trying different fixes for LNK1561 error
+	// int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd)
+	int main()
 	{
 		testSubscribe();
 		int testNum = 1;
@@ -20,6 +22,7 @@ namespace DataManagement
 		{
 			testPublish(num);
 		}
+		return 0;
 	}
 
 	void testPublish(int* num)
