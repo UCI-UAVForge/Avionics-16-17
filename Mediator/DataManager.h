@@ -13,9 +13,9 @@ namespace DataManager
 {
 	typedef void(*DataCallback)(void*, size_t);
 
-	void Publish(String type, void* data, std::size_t len);
+	void Publish(const String& key, void* data, std::size_t len);
 
-	void Subscribe(String type, DataCallback);
+	void Subscribe(const String& key, DataCallback callback);
 }
 
 #endif // DATAMANAGER_H
