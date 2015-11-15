@@ -10,7 +10,7 @@
 #include "DataManager.h"
 
 // map to store key/vector pairs
-static std::map <String, std::vector<void(*)(void*, std::size_t)> > subscribers;
+static std::map<String, std::vector<DataManager::DataCallback>> subscribers;
 
 // publish called by components with new data
 void DataManager::Publish(String type, void* data, std::size_t len)
@@ -24,7 +24,7 @@ void DataManager::Publish(String type, void* data, std::size_t len)
 	// iterate through associated vector
 	else
 	{
-		std::vector< void(*)(void*, std::size_t) > value;
+		std::vector<DataCallback> value;
 		value = subscribers[type];
 
 		for (int i = 0; i < value.size(); i++)
@@ -35,18 +35,18 @@ void DataManager::Publish(String type, void* data, std::size_t len)
 }
 
 // subscribe called by components who want certain data
-void DataManager::Subscribe(String type, void(*ptr)(void*, std::size_t))
+void DataManager::Subscribe(String type, DataCallback ptr)
 {
 	// if key does not exist, add to map with empty vector
 	if (subscribers.count(type) == 0)
 	{
-		std::pair<String, std::vector<void(*)(void*, std::size_t)>> tempPair;
-		std::vector<void(*)(void*, std::size_t)> emptyVect;
+		std::pair<String, std::vector<DataCallback>> tempPair;
+		std::vector<DataCallback> emptyVect;
 		tempPair = std::make_pair(type, emptyVect);
 		subscribers.insert(tempPair);
 	}
 
 	// add the pointer into the vector
-	std::vector<void(*)(void*, std::size_t)>& tempVect = subscribers[type];
+	std::vector<DataCallback>& tempVect = subscribers[type];
 	tempVect.push_back(ptr);
 }
