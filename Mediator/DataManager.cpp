@@ -12,15 +12,15 @@
 namespace DataManagement
 {
 	// map to store key/vector pairs
-	static std::map < std::string, std::vector<void(*)(void*, std::size_t)> > subscribers;
+	static std::map <String, std::vector<void(*)(void*, std::size_t)> > subscribers;
 
 	// publish called by components with new data
-	void DataManager::Publish(std::string type, void* data, std::size_t len)
+	void DataManager::Publish(String type, void* data, std::size_t len)
 	{
 		// key not found, send error message to publisher
 		if (subscribers.count(type) == 0)
 		{
-			std::cerr << "Please run Subscriber function first before Publish";
+			return;
 		}
 
 		// iterate through associated vector
@@ -37,12 +37,12 @@ namespace DataManagement
 	}
 
 	// subscribe called by components who want certain data
-	void DataManager::Subscribe(std::string type, void(*ptr)(void*, std::size_t))
+	void DataManager::Subscribe(String type, void(*ptr)(void*, std::size_t))
 	{
 		// if key does not exist, add to map with empty vector
 		if (subscribers.count(type) == 0)
 		{
-			std::pair<std::string, std::vector<void(*)(void*, std::size_t)>> tempPair;
+			std::pair<String, std::vector<void(*)(void*, std::size_t)>> tempPair;
 			std::vector<void(*)(void*, std::size_t)> emptyVect;
 			tempPair = std::make_pair(type, emptyVect);
 			subscribers.insert(tempPair);

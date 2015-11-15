@@ -7,19 +7,16 @@
 #ifndef DATAMANAGER_H
 #define DATAMANAGER_H
 
-#include <string>
-
-#include <iostream>
-#include <stdlib.h>
+#include "Arduino.h"
 
 namespace DataManagement
 {
 	class DataManager
 	{
 	public:
-		static void Publish(std::string type, void* data, std::size_t len);
+		static void Publish(String type, void* data, std::size_t len);
 
-		static void Subscribe(std::string type, void(void*, std::size_t));
+		static void Subscribe(String type, void(void*, std::size_t));
 	};
 }
 
