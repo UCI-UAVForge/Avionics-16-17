@@ -15,16 +15,25 @@
 
 #include "Network.h"
 
-static byte mac[] = { 0x90, 0xA2, 0xDA, 0x0F, 0x4D, 0x09 }; // MAC printed on shield
-//static byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // MAC used in Arduino example
+/// The MAC address of the Arduino's ethernet adapter.
+static byte mac[] = { 0x90, 0xA2, 0xDA, 0x0F, 0x4D, 0x09 };
+
+/// The IP address of the Arduino
 static IPAddress ip(192, 168, 1, 177);
+
+/// The port the Arduino will listen on.
 static uint16_t localPort = 8888;
 
+/// The size of the buffer used by \c ProcessNext
 const size_t BUF_SIZE = 1024;
+
+/// The buffer used by \c ProcessNext
 uint8_t buffer[BUF_SIZE];
 
+/// Instance of \c EthernetUDP used for network communication.
 EthernetUDP udp;
 
+/// Outputs some timing information to the serial port.
 static void printMetrics(size_t len, uint32_t uStart, uint32_t uEnd, const String& action)
 {
 	Serial.print("Packet ");
@@ -46,7 +55,7 @@ void Network::Setup()
 	udp.setTimeout(100);
 }
 
-void Network::Send(const uint8_t buffer[], size_t len, IPAddress& dest, uint16_t port)
+void Network::Send(const uint8_t buffer[], size_t len, const IPAddress& dest, uint16_t port)
 {
 	uint32_t us = micros();
 	udp.beginPacket(dest, port);
@@ -56,15 +65,15 @@ void Network::Send(const uint8_t buffer[], size_t len, IPAddress& dest, uint16_t
 	printMetrics(len, us, ue, "sent");
 }
 
-size_t Network::Receive(uint8_t buffer[], size_t len, IPAddress* source, uint16_t* port)
+size_t Network::Receive(uint8_t buffer[], size_t len, IPAddress& source, uint16_t& port)
 {
 	uint32_t us = micros();
 	int size = udp.parsePacket();
 	if (size)
 	{
 		size_t bytesRead = udp.readBytes(buffer, len);
-		*source = udp.remoteIP();
-		*port = udp.remotePort();
+		source = udp.remoteIP();
+		port = udp.remotePort();
 		uint32_t ue = micros();
 		printMetrics(bytesRead, us, ue, "received");
 		return bytesRead;
@@ -80,7 +89,7 @@ void Network::ProcessNext()
 	uint32_t us = micros();
 	IPAddress remoteIP;
 	uint16_t remotePort;
-	int size = Receive(buffer, BUF_SIZE, &remoteIP, &remotePort);
+	int size = Receive(buffer, BUF_SIZE, remoteIP, remotePort);
 	if (size != 0)
 	{
 		Send(buffer, size, remoteIP, remotePort);
