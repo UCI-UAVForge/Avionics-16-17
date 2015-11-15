@@ -15,38 +15,22 @@ static std::map<String, std::vector<DataManager::DataCallback>> subscribers;
 // publish called by components with new data
 void DataManager::Publish(String type, void* data, std::size_t len)
 {
-	// key not found, send error message to publisher
-	if (subscribers.count(type) == 0)
+	// Note: This will create an empty vector if there are no subscribers yet.
+	//   This would be wasteful if no one ever subscribed, but there should be
+	//   few if any cases where we are publishing data that no one ever
+	//   subscribes to.
+	std::vector<DataCallback>& value = subscribers[type];
+	for (auto it = value.begin(), end = value.end(); it != end; ++it)
 	{
-		return;
-	}
-
-	// iterate through associated vector
-	else
-	{
-		std::vector<DataCallback> value;
-		value = subscribers[type];
-
-		for (int i = 0; i < value.size(); i++)
-		{
-			value[i](data, len);
-		}
+		(*it)(data, len);
 	}
 }
 
 // subscribe called by components who want certain data
 void DataManager::Subscribe(String type, DataCallback ptr)
 {
-	// if key does not exist, add to map with empty vector
-	if (subscribers.count(type) == 0)
-	{
-		std::pair<String, std::vector<DataCallback>> tempPair;
-		std::vector<DataCallback> emptyVect;
-		tempPair = std::make_pair(type, emptyVect);
-		subscribers.insert(tempPair);
-	}
-
-	// add the pointer into the vector
-	std::vector<DataCallback>& tempVect = subscribers[type];
-	tempVect.push_back(ptr);
+	// Note: The map accessor will automatically create and empty vector if
+	//   the key does not exist, so we don't need to create the vector
+	//   explicitly.
+	subscribers[type].push_back(ptr);
 }
