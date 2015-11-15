@@ -4,8 +4,8 @@
 // Created: 10/27/2015
 // Last Modified: 10/27/2015
 
-#ifndef DATAMANAGER_H
-#define DATAMANAGER_H
+#ifndef MEDIATOR_DATAMANAGER_H
+#define MEDIATOR_DATAMANAGER_H
 
 #include "Arduino.h"
 
@@ -18,4 +18,4 @@ namespace DataManager
 	void Subscribe(const String& key, DataCallback callback);
 }
 
-#endif // DATAMANAGER_H
+#endif
