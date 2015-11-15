@@ -9,15 +9,11 @@
 
 #include "Arduino.h"
 
-namespace DataManagement
+namespace DataManager
 {
-	class DataManager
-	{
-	public:
-		static void Publish(String type, void* data, std::size_t len);
+	void Publish(String type, void* data, std::size_t len);
 
-		static void Subscribe(String type, void(void*, std::size_t));
-	};
+	void Subscribe(String type, void(void*, std::size_t));
 }
 
 #endif // DATAMANAGER_H
