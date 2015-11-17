@@ -21,12 +21,51 @@
 
 #include "Arduino.h"
 
+/// Contains functions related to Data Management System
+///
+/// \author Jason Watkins
+/// \author Kelly Ho 
+/// \author Kyle Lam 
+/// \author Iniyavan Sathiamurthi 
+/// \date 2015-11-16
 namespace DataManager
 {
+	/// Defines a pointer-to-function type for call back function.
+	/// Pointer of void function with arguments of a void-type pointer
+	/// and the maximum number of bytes to publish.
+	///
+	/// \author Jason Watkins
+	/// \author Kelly Ho 
+	/// \author Kyle Lam 
+	/// \author Iniyavan Sathiamurthi 
+	/// \date 2015-11-16
 	typedef void(*DataCallback)(void*, size_t);
-
+	
+	/// Publishes and executes the function stored in the subcriber with passed data
+	///
+	/// Creates a new subcriber if there is no subcriber 
+	///
+	/// \author Jason Watkins
+	/// \author Kelly Ho 
+	/// \author Kyle Lam 
+	/// \author Iniyavan Sathiamurthi 
+	/// \date 2015-11-16
+	///
+	/// \param key[in] Key to find the subcriber
+	/// \param data[in] The new data to pass to the subcriber
+	/// \param len[in] The maximum number of bytes to publish
 	void Publish(const String& key, void* data, std::size_t len);
-
+	
+	/// Subcribes the passed function pointer to passed key
+	///
+	/// \author Jason Watkins
+	/// \author Kelly Ho 
+	/// \author Kyle Lam 
+	/// \author Iniyavan Sathiamurthi 
+	/// \date 2015-11-16
+	///
+	/// \param key[in] Key for the subcriber
+	/// \param callback[in] The function to call when the key is published
 	void Subscribe(const String& key, DataCallback callback);
 }
 
