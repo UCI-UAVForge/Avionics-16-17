@@ -41,7 +41,11 @@ namespace DataManager
 	/// \date 2015-11-16
 	typedef void(*DataCallback)(void*, size_t);
 	
-	/// Publishes and executes the function stored in the subcriber with passed data
+	/// Publish method is takes in a string type which is a key,
+	///	pointer to the data, and the size of that data. Using the 
+	///	pointer data, Publish method looks up the key in the map 
+	///	and passes the data to the functions pointers that are 
+	///	subscribed. 
 	///
 	/// Creates a new subcriber if there is no subcriber 
 	///
@@ -53,10 +57,15 @@ namespace DataManager
 	///
 	/// \param key[in] Key to find the subcriber
 	/// \param data[in] The new data to pass to the subcriber
-	/// \param len[in] The maximum number of bytes to publish
+	/// \param len[in] The size of the data pointer
 	void Publish(const String& key, void* data, std::size_t len);
 	
-	/// Subcribes the passed function pointer to passed key
+	/// Subscribe method takes in the string type whcih is a key.
+	///	If the key does not exist in the map then Publish mehtod
+	///	creates the key and ignores the other paramenter. If the 
+	///	key already exists, then the Subscribe method appends the
+	///	funtion pointer(2nd parameter) to the value of the map which
+	///	is an array of function pointers.
 	///
 	/// \author Jason Watkins
 	/// \author Kelly Ho 
@@ -64,7 +73,7 @@ namespace DataManager
 	/// \author Iniyavan Sathiamurthi 
 	/// \date 2015-11-16
 	///
-	/// \param key[in] Key for the subcriber
+	/// \param key[in] The key is the index of the subsriber
 	/// \param callback[in] The function to call when the key is published
 	void Subscribe(const String& key, DataCallback callback);
 }
