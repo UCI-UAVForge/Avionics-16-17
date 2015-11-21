@@ -1,0 +1,802 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     24721,        793]
+NotebookOptionsPosition[     21896,        689]
+NotebookOutlinePosition[     22237,        704]
+CellTagsIndexPosition[     22194,        701]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["UAV Forge Power Supply Calculations", "Title",
+ CellChangeTimes->{{3.655308537517172*^9, 3.6553085467650185`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["DC-DC Converter (LT3514)", "Section",
+ CellChangeTimes->{{3.6553085530694933`*^9, 3.655308556300824*^9}, {
+  3.655308624350127*^9, 3.655308625093652*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.6553099030844297`*^9, 3.6553099077808847`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Constants:", "Subsection",
+ CellChangeTimes->{{3.655308806325159*^9, 3.655308808420621*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Minimum/Maximum Input:", "Subsubsection",
+ CellChangeTimes->{{3.655308828981105*^9, 3.6553088335643406`*^9}, 
+   3.655309468130397*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"maxIn", "=", "16"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"minIn", "=", "14"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Vin", "=", "14.7"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6553088405823326`*^9, 3.655308854270506*^9}, {
+  3.6553111465816517`*^9, 3.655311148919318*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Switching Frequency:", "Subsubsection",
+ CellChangeTimes->{{3.6553088209344654`*^9, 3.6553088235653257`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"fsw", "=", 
+    RowBox[{"1", "*", 
+     SuperscriptBox["10", "6"]}]}], ";"}], " "}]], "Input",
+ CellChangeTimes->{{3.655308809166148*^9, 3.6553088133841314`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Output Voltages:", "Subsubsection",
+ CellChangeTimes->{{3.655308875964592*^9, 3.655308881772728*^9}}],
+
+Cell["\<\
+Since there ouputs referenced by the datasheet are Out1, Out3, and Out4, we \
+set the second element of the list to zero. This will make notation uniform \
+across our calculations and the datasheet of the device. 
+
+Since Iout3 has highest current output and we want 12V to provide the most \
+current we make 12V the third list element.
+
+We will pick an arbitrary value for R2 which is used in calculating the \
+output voltage. \
+\>", "Text",
+ CellChangeTimes->{{3.655308924917117*^9, 3.655308955390877*^9}, {
+  3.6553093633467016`*^9, 3.6553094191635857`*^9}, {3.65531048743845*^9, 
+  3.6553105015444045`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Voutlist", "=", 
+   RowBox[{"List", "[", 
+    RowBox[{"3.3", ",", "0", ",", "12", ",", "5"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"R2", "=", " ", 
+   RowBox[{"5", "*", 
+    SuperscriptBox["10", "3"]}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6553088831937323`*^9, 3.655308919871572*^9}, {
+  3.655309398773165*^9, 3.6553093989813137`*^9}, {3.655309931859967*^9, 
+  3.655309933468133*^9}, {3.655309983076546*^9, 3.6553099839551706`*^9}, {
+  3.655310485367734*^9, 3.655310486018184*^9}, {3.6553105976413407`*^9, 
+  3.6553106004733453`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Output Currents:", "Subsubsection",
+ CellChangeTimes->{{3.6553088982841377`*^9, 3.655308901308313*^9}}],
+
+Cell["\<\
+Since Iout3 has highest current output and we want 12V to provide the most \
+current we make 2A the second list element.\
+\>", "Text",
+ CellChangeTimes->{{3.6553089591845646`*^9, 3.6553089784440594`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Ioutlist", "=", 
+   RowBox[{"List", "[", 
+    RowBox[{"1", ",", "0", ",", "2", ",", "1"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.655308902554188*^9, 3.655308916479143*^9}, {
+   3.655309401085779*^9, 3.655309401313944*^9}, 3.6553099363881755`*^9, {
+   3.655309980654807*^9, 3.655309981475416*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Diode Forward Voltage:", "Subsubsection",
+ CellChangeTimes->{{3.655309050443842*^9, 3.6553090529716225`*^9}, 
+   3.6553094644828415`*^9}],
+
+Cell["Comes from the data sheet of ", "Text",
+ CellChangeTimes->{{3.6553090606200323`*^9, 3.65530906648418*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Vd", "=", "0.4"}], ";"}]], "Input",
+ CellChangeTimes->{{3.655309053708171*^9, 3.6553090548239346`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Switching Frequency:", "Subsubsection",
+ CellChangeTimes->{{3.6553094588988686`*^9, 3.655309466347165*^9}}],
+
+Cell["\<\
+We pick the switching frequency based on efficiency and recommendations made \
+in the datasheet\
+\>", "Text",
+ CellChangeTimes->{{3.6553094797311277`*^9, 3.655309500978244*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"fsw", "=", 
+   RowBox[{"1", "*", 
+    SuperscriptBox["10", "6"]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6553095025183315`*^9, 3.6553095065171595`*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Design Equations:", "Subsection",
+ CellChangeTimes->{{3.6553086375094333`*^9, 3.6553086459729614`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Maximum Input:", "Subsubsection",
+ CellChangeTimes->{{3.655309293163652*^9, 3.6553092956193714`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"maxVincalc", "[", "Vout_", "]"}], ":=", 
+   FractionBox[
+    RowBox[{"Vout", "+", "Vd"}], 
+    RowBox[{"fsw", "*", "110", "*", 
+     SuperscriptBox["10", 
+      RowBox[{"-", "9"}]]}]]}], ";"}]], "Input",
+ CellChangeTimes->{{3.655309433775838*^9, 3.655309436880005*^9}, {
+  3.655309967134763*^9, 3.6553099677031655`*^9}, {3.655310618523634*^9, 
+  3.6553106188568726`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Output Voltage Setting:", "Subsubsection",
+ CellChangeTimes->{{3.6553092799632416`*^9, 3.6553092834917374`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"R1calc", "[", 
+    RowBox[{"Vout_", ",", "R2_"}], "]"}], ":=", 
+   RowBox[{"R2", "*", 
+    RowBox[{"(", 
+     RowBox[{
+      FractionBox["Vout", "0.8"], "-", "1"}], ")"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6553086471657906`*^9, 3.655308784870823*^9}, {
+  3.655309011745261*^9, 3.6553090715940533`*^9}, {3.6553091040429726`*^9, 
+  3.655309122407093*^9}, {3.6553091841842847`*^9, 3.6553092208385577`*^9}, {
+  3.6553092990428066`*^9, 3.655309327544491*^9}, {3.6553106049825325`*^9, 
+  3.6553106054188414`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Output Inductors:", "Subsubsection",
+ CellChangeTimes->{{3.6553093099800453`*^9, 3.655309312235664*^9}, {
+  3.6553109941331444`*^9, 3.655310994693514*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"L14calc", "[", "Vout_", "]"}], ":=", 
+   FractionBox[
+    RowBox[{"2", "*", 
+     RowBox[{"(", 
+      RowBox[{"Vout", "+", "Vd"}], ")"}]}], "fsw"]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"L3calc", "[", "Vout_", "]"}], ":=", 
+   FractionBox[
+    RowBox[{"Vout", "+", "Vd"}], "fsw"]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.655309438817404*^9, 3.6553094417274337`*^9}, {
+  3.655310606882871*^9, 3.655310608803234*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Output Capacitors:", "Subsubsection",
+ CellChangeTimes->{{3.6553093214511533`*^9, 3.6553093226189795`*^9}, {
+  3.6553109906396723`*^9, 3.6553109920936832`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Cout14calc", "[", "Vout_", "]"}], ":=", 
+   FractionBox["33", 
+    RowBox[{"Vout", "*", "fsw"}]]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Cout3calc", "[", "Vout_", "]"}], ":=", 
+   FractionBox["132", 
+    RowBox[{"Vout", "*", "fsw"}]]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.655309443599781*^9, 3.6553094467910147`*^9}, {
+  3.655310610115712*^9, 3.655310611867934*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Boost Regulator:", "Subsubsection",
+ CellChangeTimes->{{3.655309555818698*^9, 3.655309559082027*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Iskycalc", "[", 
+    RowBox[{
+    "Iout1_", ",", "Iout3_", ",", "Iout4_", ",", "Vout1_", ",", "Vout3_", ",",
+      "Vout4_", ",", "Vin_"}], "]"}], ":=", 
+   FractionBox[
+    RowBox[{
+     RowBox[{"Iout1", "*", "Vout1"}], "+", 
+     RowBox[{"Iout3", "*", "Vout3"}], "+", 
+     RowBox[{"Iout4", "*", "Vout4"}]}], 
+    RowBox[{"50", "*", "Vin"}]]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Lskycalc", "[", 
+    RowBox[{"Vin_", ",", "Isky_"}], "]"}], ":=", 
+   FractionBox[
+    RowBox[{"Vin", "*", 
+     RowBox[{"(", 
+      FractionBox["5", 
+       RowBox[{"Vin", "+", "5"}]], ")"}]}], 
+    RowBox[{"2", "*", "fsw", "*", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"0.3", "*", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          RowBox[{"0.25", "*", 
+           RowBox[{"(", 
+            FractionBox["5", 
+             RowBox[{"Vin", "+", "5"}]], ")"}]}]}], ")"}]}], "-", "Isky"}], 
+      ")"}]}]]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.655309560899291*^9, 3.6553096855447025`*^9}, {
+  3.6553106137843065`*^9, 3.6553106161900125`*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Calculations:", "Subsection",
+ CellChangeTimes->{{3.65530978367404*^9, 3.6553097851060534`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Output Voltage Setting:", "Subsubsection",
+ CellChangeTimes->{3.655309835402615*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"R1list", "=", 
+   RowBox[{"R1calc", "[", 
+    RowBox[{"Voutlist", ",", "R2"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TableForm", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Voutlist", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], ",", 
+        RowBox[{"R1list", "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Voutlist", "[", 
+         RowBox[{"[", "3", "]"}], "]"}], ",", 
+        RowBox[{"R1list", "[", 
+         RowBox[{"[", "3", "]"}], "]"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Voutlist", "[", 
+         RowBox[{"[", "4", "]"}], "]"}], ",", 
+        RowBox[{"R1list", "[", 
+         RowBox[{"[", "4", "]"}], "]"}]}], "}"}]}], "}"}], ",", 
+    RowBox[{"TableHeadings", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<Vout (V)\>\"", ",", "\"\<R1(\[CapitalOmega])\>\""}], 
+        "}"}]}], "}"}]}]}], "]"}], "//", "Framed"}]}], "Input",
+ CellChangeTimes->{{3.6553104334090676`*^9, 3.655310475561813*^9}, {
+  3.65531071908963*^9, 3.6553107590941505`*^9}}],
+
+Cell[BoxData[
+ FrameBox[
+  TagBox[
+   TagBox[GridBox[{
+      {
+       StyleBox["\[Null]",
+        ShowStringCharacters->False], 
+       TagBox["\<\"Vout (V)\"\>",
+        HoldForm], 
+       TagBox["\<\"R1(\[CapitalOmega])\"\>",
+        HoldForm]},
+      {
+       TagBox[
+        StyleBox["\<\"\[Null]\"\>",
+         ShowStringCharacters->False],
+        StyleForm[#, ShowStringCharacters -> False]& ], "3.3`", "15625.`"},
+      {
+       TagBox[
+        StyleBox["\<\"\[Null]\"\>",
+         ShowStringCharacters->False],
+        StyleForm[#, ShowStringCharacters -> False]& ], "12", "70000.`"},
+      {
+       TagBox[
+        StyleBox["\<\"\[Null]\"\>",
+         ShowStringCharacters->False],
+        StyleForm[#, ShowStringCharacters -> False]& ], "5", "26250.`"}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+       "RowsIndexed" -> {}},
+     GridBoxDividers->{
+      "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+       "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[2.0999999999999996`]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}],
+   Function[BoxForm`e$, 
+    TableForm[
+    BoxForm`e$, TableHeadings -> {{}, {"Vout (V)", "R1(\[CapitalOmega])"}}]]],
+  StripOnInput->False]], "Output",
+ CellChangeTimes->{{3.655310744166594*^9, 3.6553107596965623`*^9}, 
+   3.655311249770917*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Output Inductors:", "Subsubsection",
+ CellChangeTimes->{{3.6553107823663607`*^9, 3.6553107835181837`*^9}, {
+  3.6553109972533307`*^9, 3.6553109977827272`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"L1", "=", 
+   RowBox[{"L14calc", "[", 
+    RowBox[{"Voutlist", "[", 
+     RowBox[{"[", "1", "]"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L3", "=", 
+   RowBox[{"L3calc", "[", 
+    RowBox[{"Voutlist", "[", 
+     RowBox[{"[", "3", "]"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L4", "=", 
+   RowBox[{"L14calc", "[", 
+    RowBox[{"Voutlist", "[", 
+     RowBox[{"[", "4", "]"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ScientificForm", "[", 
+   RowBox[{"TableForm", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"L1", ",", "L3", ",", "L4"}], "}"}], "}"}], ",", 
+     RowBox[{"TableHeadings", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+         "\"\<L1 (H)\>\"", ",", "\"\<L3 (H)\>\"", ",", "\"\<L4 (H)\>\""}], 
+         "}"}]}], "}"}]}]}], "]"}], "]"}], "//", "Framed"}]}], "Input",
+ CellChangeTimes->{{3.65531079392264*^9, 3.6553109498095617`*^9}, {
+  3.655311320091237*^9, 3.6553113262425833`*^9}}],
+
+Cell[BoxData[
+ FrameBox[
+  TagBox[
+   TagBox[
+    TagBox[GridBox[{
+       {
+        StyleBox["\[Null]",
+         ShowStringCharacters->False], 
+        TagBox["\<\"L1 (H)\"\>",
+         HoldForm], 
+        TagBox["\<\"L3 (H)\"\>",
+         HoldForm], 
+        TagBox["\<\"L4 (H)\"\>",
+         HoldForm]},
+       {
+        TagBox[
+         StyleBox["\<\"\[Null]\"\>",
+          ShowStringCharacters->False],
+         StyleForm[#, ShowStringCharacters -> False]& ], 
+        InterpretationBox[
+         RowBox[{"\<\"7.4\"\>", "\[Times]", 
+          SuperscriptBox["10", "\<\"-6\"\>"]}],
+         7.3999999999999995`*^-6,
+         AutoDelete->True], 
+        InterpretationBox[
+         RowBox[{"\<\"1.24\"\>", "\[Times]", 
+          SuperscriptBox["10", "\<\"-5\"\>"]}],
+         0.0000124,
+         AutoDelete->True], 
+        InterpretationBox[
+         RowBox[{"\<\"1.08\"\>", "\[Times]", 
+          SuperscriptBox["10", "\<\"-5\"\>"]}],
+         0.0000108,
+         AutoDelete->True]}
+      },
+      GridBoxAlignment->{
+       "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+        "RowsIndexed" -> {}},
+      GridBoxDividers->{
+       "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+        "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[2.0999999999999996`]}, 
+          Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}, "RowsIndexed" -> {}}],
+     {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}],
+    Function[BoxForm`e$, 
+     TableForm[
+     BoxForm`e$, TableHeadings -> {{}, {"L1 (H)", "L3 (H)", "L4 (H)"}}]]],
+   ScientificForm],
+  StripOnInput->False]], "Output",
+ CellChangeTimes->{{3.65531092779524*^9, 3.655310950260854*^9}, 
+   3.6553112497769213`*^9, 3.6553113269821234`*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Output Capacitors:", "Subsubsection",
+ CellChangeTimes->{{3.6553109832052574`*^9, 3.6553109873493495`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Cout1", "=", 
+   RowBox[{"Cout14calc", "[", 
+    RowBox[{"Voutlist", "[", 
+     RowBox[{"[", "1", "]"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Cout3", "=", 
+   RowBox[{"Cout3calc", "[", 
+    RowBox[{"Voutlist", "[", 
+     RowBox[{"[", "3", "]"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Cout4", "=", 
+   RowBox[{"Cout14calc", "[", 
+    RowBox[{"Voutlist", "[", 
+     RowBox[{"[", "4", "]"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ScientificForm", "[", 
+   RowBox[{"N", "[", 
+    RowBox[{"TableForm", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"{", 
+        RowBox[{"Cout1", ",", "Cout3", ",", "Cout4"}], "}"}], "}"}], ",", 
+      RowBox[{"TableHeadings", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<C1 (F)\>\"", ",", "\"\<C3 (F)\>\"", ",", "\"\<C4 (F)\>\""}], 
+          "}"}]}], "}"}]}]}], "]"}], "]"}], "]"}], "//", "Framed"}]}], "Input",
+ CellChangeTimes->{{3.6553110064196825`*^9, 3.6553110647366257`*^9}, {
+  3.6553113122567167`*^9, 3.6553113169860663`*^9}}],
+
+Cell[BoxData[
+ FrameBox[
+  TagBox[
+   TagBox[
+    TagBox[GridBox[{
+       {
+        StyleBox["\[Null]",
+         ShowStringCharacters->False], 
+        TagBox["\<\"C1 (F)\"\>",
+         HoldForm], 
+        TagBox["\<\"C3 (F)\"\>",
+         HoldForm], 
+        TagBox["\<\"C4 (F)\"\>",
+         HoldForm]},
+       {
+        TagBox[
+         StyleBox["\<\"\[Null]\"\>",
+          ShowStringCharacters->False],
+         StyleForm[#, ShowStringCharacters -> False]& ], 
+        InterpretationBox[
+         RowBox[{"\<\"1.\"\>", "\[Times]", 
+          SuperscriptBox["10", "\<\"-5\"\>"]}],
+         0.00001,
+         AutoDelete->True], 
+        InterpretationBox[
+         RowBox[{"\<\"1.1\"\>", "\[Times]", 
+          SuperscriptBox["10", "\<\"-5\"\>"]}],
+         0.000011,
+         AutoDelete->True], 
+        InterpretationBox[
+         RowBox[{"\<\"6.6\"\>", "\[Times]", 
+          SuperscriptBox["10", "\<\"-6\"\>"]}],
+         6.6*^-6,
+         AutoDelete->True]}
+      },
+      GridBoxAlignment->{
+       "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+        "RowsIndexed" -> {}},
+      GridBoxDividers->{
+       "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+        "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[2.0999999999999996`]}, 
+          Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}, "RowsIndexed" -> {}}],
+     {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}],
+    Function[BoxForm`e$, 
+     TableForm[
+     BoxForm`e$, TableHeadings -> {{}, {"C1 (F)", "C3 (F)", "C4 (F)"}}]]],
+   ScientificForm],
+  StripOnInput->False]], "Output",
+ CellChangeTimes->{{3.6553110266634045`*^9, 3.65531106511688*^9}, 
+   3.6553112497879295`*^9, 3.6553113178276463`*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Boost Regulator:", "Subsubsection",
+ CellChangeTimes->{{3.6553111974449525`*^9, 3.6553111999967585`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Isky", "=", 
+   RowBox[{"Iskycalc", "[", 
+    RowBox[{
+     RowBox[{"Ioutlist", "[", 
+      RowBox[{"[", "1", "]"}], "]"}], ",", 
+     RowBox[{"Ioutlist", "[", 
+      RowBox[{"[", "3", "]"}], "]"}], ",", 
+     RowBox[{"Ioutlist", "[", 
+      RowBox[{"[", "4", "]"}], "]"}], ",", 
+     RowBox[{"Voutlist", "[", 
+      RowBox[{"[", "1", "]"}], "]"}], ",", 
+     RowBox[{"Voutlist", "[", 
+      RowBox[{"[", "3", "]"}], "]"}], ",", 
+     RowBox[{"Voutlist", "[", 
+      RowBox[{"[", "4", "]"}], "]"}], ",", "Vin"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Lsky", "=", 
+   RowBox[{"Lskycalc", "[", 
+    RowBox[{"Vin", ",", "Isky"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ScientificForm", "[", 
+   RowBox[{"TableForm", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"{", "Lsky", "}"}], "}"}], ",", 
+     RowBox[{"TableHeadings", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", "}"}], ",", 
+        RowBox[{"{", "\"\<Lsky (H)\>\"", "}"}]}], "}"}]}]}], "]"}], "]"}], "//",
+   "Framed"}]}], "Input",
+ CellChangeTimes->{{3.655311206855587*^9, 3.655311308538114*^9}}],
+
+Cell[BoxData[
+ FrameBox[
+  TagBox[
+   TagBox[
+    TagBox[GridBox[{
+       {
+        StyleBox["\[Null]",
+         ShowStringCharacters->False], 
+        TagBox["\<\"Lsky (H)\"\>",
+         HoldForm]},
+       {
+        TagBox[
+         StyleBox["\<\"\[Null]\"\>",
+          ShowStringCharacters->False],
+         StyleForm[#, ShowStringCharacters -> False]& ], 
+        InterpretationBox[
+         RowBox[{"\<\"7.87061\"\>", "\[Times]", 
+          SuperscriptBox["10", "\<\"-6\"\>"]}],
+         7.870605769665042*^-6,
+         AutoDelete->True]}
+      },
+      GridBoxAlignment->{
+       "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+        "RowsIndexed" -> {}},
+      GridBoxDividers->{
+       "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+        "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[2.0999999999999996`]}, 
+          Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}, "RowsIndexed" -> {}}],
+     {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}],
+    Function[BoxForm`e$, 
+     TableForm[BoxForm`e$, TableHeadings -> {{}, {"Lsky (H)"}}]]],
+   ScientificForm],
+  StripOnInput->False]], "Output",
+ CellChangeTimes->{{3.655311243492478*^9, 3.6553112498079414`*^9}, {
+  3.655311281227528*^9, 3.6553113090924892`*^9}}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{704, 805},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"10.1 for Microsoft Windows (64-bit) (March 23, 2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 120, 1, 166, "Title"],
+Cell[CellGroupData[{
+Cell[725, 27, 160, 2, 70, "Section"],
+Cell[888, 31, 143, 2, 31, "Input"],
+Cell[CellGroupData[{
+Cell[1056, 37, 98, 1, 49, "Subsection"],
+Cell[CellGroupData[{
+Cell[1179, 42, 141, 2, 39, "Subsubsection"],
+Cell[1323, 46, 339, 8, 72, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1699, 59, 115, 1, 39, "Subsubsection"],
+Cell[1817, 62, 209, 6, 31, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2063, 73, 107, 1, 39, "Subsubsection"],
+Cell[2173, 76, 620, 13, 163, "Text"],
+Cell[2796, 91, 602, 14, 52, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3435, 110, 109, 1, 39, "Subsubsection"],
+Cell[3547, 113, 214, 4, 49, "Text"],
+Cell[3764, 119, 341, 7, 31, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4142, 131, 143, 2, 39, "Subsubsection"],
+Cell[4288, 135, 112, 1, 30, "Text"],
+Cell[4403, 138, 138, 3, 31, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4578, 146, 113, 1, 39, "Subsubsection"],
+Cell[4694, 149, 187, 4, 49, "Text"],
+Cell[4884, 155, 190, 5, 31, "Input"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5123, 166, 109, 1, 49, "Subsection"],
+Cell[CellGroupData[{
+Cell[5257, 171, 107, 1, 39, "Subsubsection"],
+Cell[5367, 174, 418, 11, 47, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5822, 190, 118, 1, 39, "Subsubsection"],
+Cell[5943, 193, 563, 13, 46, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6543, 211, 161, 2, 39, "Subsubsection"],
+Cell[6707, 215, 495, 15, 82, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7239, 235, 166, 2, 39, "Subsubsection"],
+Cell[7408, 239, 446, 12, 82, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7891, 256, 107, 1, 39, "Subsubsection"],
+Cell[8001, 259, 1122, 34, 122, "Input"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9172, 299, 102, 1, 49, "Subsection"],
+Cell[CellGroupData[{
+Cell[9299, 304, 90, 1, 39, "Subsubsection"],
+Cell[CellGroupData[{
+Cell[9414, 309, 1247, 36, 92, "Input"],
+Cell[10664, 347, 1677, 46, 84, "Output"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12390, 399, 165, 2, 39, "Subsubsection"],
+Cell[CellGroupData[{
+Cell[12580, 405, 1123, 32, 132, "Input"],
+Cell[13706, 439, 1957, 55, 56, "Output"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15712, 500, 113, 1, 39, "Subsubsection"],
+Cell[CellGroupData[{
+Cell[15850, 505, 1197, 33, 152, "Input"],
+Cell[17050, 540, 1937, 55, 56, "Output"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19036, 601, 111, 1, 39, "Subsubsection"],
+Cell[CellGroupData[{
+Cell[19172, 606, 1166, 34, 132, "Input"],
+Cell[20341, 642, 1491, 40, 56, "Output"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
