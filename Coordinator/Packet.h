@@ -25,8 +25,7 @@ namespace Protocol
 		Ack = 0,
 		Telem = 1,
 		Action = 2,
-		Update = 3,
-		Info = 4
+		Info = 3
 	};
 
 	class Packet

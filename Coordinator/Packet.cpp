@@ -15,7 +15,16 @@
 
 #include "Packet.h"
 #include "AckPacket.h"
+#include "ActionPacket.h"
+#include "InfoPacket.h"
 #include "TelemetryPacket.h"
+
+// Statically allocate space for one of each type of packet for use with
+// Packet::Parse.
+static Protocol::AckPacket ack;
+static Protocol::ActionPacket action;
+static Protocol::InfoPacket info;
+static Protocol::TelemetryPacket telem;
 
 Protocol::Packet::Packet(Protocol::PacketType t)
 {
@@ -82,6 +91,11 @@ bool ValidateChecksum(const uint8_t* data, size_t len)
 
 Protocol::Packet* Protocol::Packet::Parse(uint8_t* buffer, size_t len)
 {
+	if (len < 1)
+	{
+		Serial.println("ERROR: Packet length must be greater than 0.");
+		return nullptr;
+	}
 	if (!ValidateChecksum(buffer, len))
 	{
 		Serial.println("Warning: Packet Checksum failed.");
@@ -91,17 +105,20 @@ Protocol::Packet* Protocol::Packet::Parse(uint8_t* buffer, size_t len)
 	PacketType type = (PacketType)buffer[0];
 	switch (type)
 	{
-	case Protocol::PacketType::Ack:
-		return new AckPacket(buffer, len);
-	case Protocol::PacketType::Telem:
-		return new TelemetryPacket(buffer, len);
-	case Protocol::PacketType::Action:
-		break;
-	case Protocol::PacketType::Update:
-		break;
-	case Protocol::PacketType::Info:
-		break;
+	case PacketType::Ack:
+		ack = AckPacket(buffer, len);
+		return &ack;
+	case PacketType::Action:
+		action = ActionPacket(buffer, len);
+		return &action;
+	case PacketType::Telem:
+		telem = TelemetryPacket(buffer, len);
+		return &telem;
+	case PacketType::Info:
+		info = InfoPacket(buffer, len);
+		return &info;
 	default:
-		break;
+		Serial.println("Warning: Unknown packet type.");
+		return nullptr;
 	}
 }
