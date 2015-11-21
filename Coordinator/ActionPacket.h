@@ -1,8 +1,5 @@
 // Copyright (c) 2015:
 // Jason Watkins <watkins1@uci.edu>
-// Iniyavan Sathiamurthi <isathiam@uci.edu>
-// Kelly Ho <doankhah@uci.edu>
-// Kyle Lam <kylehl1@uci.edu>
 //
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -16,18 +13,54 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-#ifndef MEDIATOR_DATAMANAGER_H
-#define MEDIATOR_DATAMANAGER_H
+#ifndef COORDINATOR_ACTIONPACKET_H
+#define COORDINATOR_ACTIONPACKET_H
 
 #include "Arduino.h"
+#include "Packet.h"
 
-namespace DataManager
+namespace Protocol
 {
-	typedef void(*DataCallback)(void*, size_t);
+	enum class ActionType : uint8_t
+	{
+		Start = 0,
+		RequestInfo = 1,
+		AddWaypoint = 2,
+		SetHome = 3,
+		RemoveWaypoint = 4,
+		Stop = 14,
+		Shutdown = 15
+	};
 
-	void Publish(const String& key, void* data, std::size_t len);
+	typedef struct
+	{
+		double lat;
+		double lon;
+		float alt;
+		float speed;
+	} Waypoint;
 
-	void Subscribe(const String& key, DataCallback callback);
+	class ActionPacket : public Packet
+	{
+	private:
+		ActionType action;
+		Waypoint waypoint;
+
+	public:
+		ActionPacket() : Packet(PacketType::Action) {}
+
+		ActionPacket(uint8_t* buffer, size_t len);
+
+		void SetAction(ActionType a);
+
+		void SetWaypoint(Waypoint wp);
+
+		ActionType GetAction();
+
+		Waypoint GetWaypoint();
+
+		virtual size_t GetBytes(uint8_t* buffer, size_t len);
+	};
 }
 
 #endif

@@ -1,5 +1,8 @@
 // Copyright (c) 2015:
-// Jason Watkins <watkins1@udi.edu>
+// Jason Watkins <watkins1@uci.edu>
+// Iniyavan Sathiamurthi <isathiam@uci.edu>
+// Kelly Ho <doankhah@uci.edu>
+// Kyle Lam <kylehl1@uci.edu>
 //
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -13,30 +16,18 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-// Note: Arduino needs all includes at the top of the ino file as well as in
-// the .h/.cpp files. This is a pain, but I don't know of any way around it.
+#ifndef COORDINATOR_DATAMANAGER_H
+#define COORDINATOR_DATAMANAGER_H
 
-// Data Manager Includes
-#include <map>
-#include <vector>
+#include "Arduino.h"
 
-// Networking Includes
-#include <SPI.h>
-#include <Ethernet.h>
-#include <EthernetUdp.h>
-
-
-#include "Network.h"
-
-void setup()
+namespace DataManager
 {
-	Network::Setup();
+	typedef void(*DataCallback)(void*, size_t);
 
-	Serial.begin(115200);
+	void Publish(const String& key, void* data, std::size_t len);
+
+	void Subscribe(const String& key, DataCallback callback);
 }
 
-void loop()
-{
-	Network::ProcessNext();
-	delay(5);
-}
+#endif
