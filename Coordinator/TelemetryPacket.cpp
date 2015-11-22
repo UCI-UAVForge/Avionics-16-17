@@ -1,5 +1,6 @@
 // Copyright (c) 2015:
 // Jason Watkins <watkins1@uci.edu>
+// Harit Desai <hmdesai@uci.edu>
 //
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
