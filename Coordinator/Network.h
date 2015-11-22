@@ -27,12 +27,6 @@
 /// \date 2015-11-14
 namespace Network
 {
-	/// Reads and processes the next incoming packet from the ground station.
-	///
-	/// \author Jason Watkins
-	/// \date 2015-11-14
-	void ProcessNext();
-
 	/// Trys to read a packet from the network link.
 	///
 	/// Trys to read a packet from the network link, storing the source
@@ -63,7 +57,10 @@ namespace Network
 	///
 	/// \author Jason Watkins
 	/// \date 2015-11-14
-	void Setup();
+	///
+	/// \param addr[in] The local IP address of the Coordinator.
+	/// \param port[in] The local port of the Coordinator.
+	void Setup(IPAddress& addr, uint16_t port);
 }
 
 #endif

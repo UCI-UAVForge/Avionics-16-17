@@ -22,8 +22,8 @@ Protocol::InfoPacket::InfoPacket(uint8_t* buffer, size_t len) : InfoPacket()
 	this->pointsStorable = *((uint16_t*)(buffer + offset));
 	this->batteryState = *((uint16_t*)(buffer + offset + 2));
 	uint16_t otherLen = *((uint16_t*)(buffer + offset + 4));
-	uint8_t* otherBytes = new uint8_t[otherLen + 1];
-	strncpy(otherBytes, buffer + 6, otherLen);
+	char* otherBytes = new char[otherLen + 1];
+	strncpy(otherBytes, (char*)(buffer + 6), otherLen);
 	this->other = String((char*)otherBytes);
 }
 

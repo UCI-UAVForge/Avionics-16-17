@@ -47,7 +47,7 @@ namespace Protocol
 		/// \returns          The number of bytes written to buffer.
 		size_t WriteHeader(uint8_t* buffer, size_t len);
 
-		/// Writes information shared by all packets to the given buffer.
+		/// Reads information shared by all packets from the given buffer.
 		///
 		/// \author Jason Watkins
 		/// \date 2015-11-16

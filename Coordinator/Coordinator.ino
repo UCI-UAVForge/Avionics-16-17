@@ -27,16 +27,29 @@
 
 
 #include "Network.h"
+#include "PacketHandler.h"
+
+/// The IP address of the Arduino
+static IPAddress localIP(192, 168, 1, 100);
+/// The port the Arduino will listen on.
+static uint16_t localPort = 50000;
+
+/// The IP address of the ground station
+static IPAddress remoteIP(192, 168, 1, 200);
+/// The port the Arduino will send to.
+static uint16_t remotePort = 60000;
 
 void setup()
 {
-	Network::Setup();
+	Network::Setup(localIP, localPort);
+	Protocol::Setup(remoteIP, remotePort);
 
 	Serial.begin(115200);
 }
 
 void loop()
 {
-	Network::ProcessNext();
+	Protocol::Packet* p = Protocol::ReadPacket();
+	Protocol::HandlePacket(p);
 	delay(5);
 }
