@@ -16,8 +16,8 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-#ifndef MEDIATOR_DATAMANAGER_H
-#define MEDIATOR_DATAMANAGER_H
+#ifndef COORDINATOR_DATAMANAGER_H
+#define COORDINATOR_DATAMANAGER_H
 
 #include "Arduino.h"
 
@@ -59,7 +59,7 @@ namespace DataManager
 	/// \param data[in] The data that will be passed to the function pointers. 
 	/// \param len[in] The size of the data pointer. 
 	void Publish(const String& key, void* data, std::size_t len);
-	
+
 	/// Creates a new key for the subscriber if the key does not exists and adds
 	/// values to the subscriber.
 	///
