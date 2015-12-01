@@ -21,10 +21,10 @@
 
 #include "DataManager.h"
 
-// map to store key/vector pairs
+/// The map stored subscribers which contain the key and the call back function.
 static std::map<String, std::vector<DataManager::DataCallback>> subscribers;
 
-// publish called by components with new data
+// Publishes and executes the function stored in subcriber with caller's data
 void DataManager::Publish(const String& key, void* data, std::size_t len)
 {
 	// Note: This will create an empty vector if there are no subscribers yet.
@@ -38,7 +38,7 @@ void DataManager::Publish(const String& key, void* data, std::size_t len)
 	}
 }
 
-// subscribe called by components who want certain data
+// Subscribes passed callback function to passed key.
 void DataManager::Subscribe(const String& key, DataCallback callback)
 {
 	// Note: The map accessor will automatically create and empty vector if
