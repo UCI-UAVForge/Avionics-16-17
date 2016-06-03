@@ -1,0 +1,7 @@
+# Ignore Visual Micro Files #
+#############################
+/__vm/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+
