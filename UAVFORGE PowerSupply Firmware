@@ -1,0 +1,21 @@
+///-----------------------------------------------------------------------------
+///   Program:        <OutputPower>
+///   Description:    <This program takes two inputs and sets the pins' output 
+///                   values accordingly.>
+///   Author:         <Deukkwon Yoon>                    
+///   Date:           <10-18-2015>
+///   Notes:          <None>
+///   Revision History:
+///   Name:           Date:        Description:
+///   Deukkwon Yoon   10-18-2015   File Created
+///-----------------------------------------------------------------------------
+
+void OutputPower(int outpin, int power){
+// Takes 2 inputs: specified output connector (1-8) and
+//                 either on or off (1 or 0).
+
+    pinMode(outpin, OUTPUT);
+    if (power == 1) { digitalWrite(outpin, HIGH); }
+    // All other power states are considered to be off
+    else { digitalWrite(outpin, LOW); }
+}
